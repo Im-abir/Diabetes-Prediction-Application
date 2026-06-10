@@ -46,8 +46,8 @@ def predict_data():
              return "Invalid input for Pregnancies. Please enter a value between 0 and 20."
         if not (0<=Glucose <=200):
              return "Invalid input for Glucose. Please enter a value between 0 and 200."
-        if not (0<=BloodPressure <=200):
-             return "Invalid input for Blood Pressure. Please enter a value between 0 and 200."
+        if not (0<=BloodPressure <=300):
+             return "Invalid input for Blood Pressure. Please enter a value between 0 and 300."
         if not (0<=SkinThickness <=100):
              return "Invalid input for Skin Thickness. Please enter a value between 0 and 100."
         if not (0<=Insulin <=850):
