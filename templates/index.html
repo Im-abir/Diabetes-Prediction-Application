@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diabetes Prediction</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            background: #f5f5f0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 1rem;
+        }
+
+        .dp-wrap {
+            width: 100%;
+            max-width: 560px;
+        }
+
+        .dp-card {
+            background: #ffffff;
+            border: 0.5px solid rgba(0,0,0,0.12);
+            border-radius: 12px;
+            padding: 2rem;
+        }
+
+        .dp-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 1.75rem;
+        }
+
+        .dp-icon {
+            width: 46px;
+            height: 46px;
+            border-radius: 50%;
+            background: #e6f1fb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #185fa5;
+            font-size: 22px;
+            flex-shrink: 0;
+        }
+
+        .dp-title {
+            font-size: 18px;
+            font-weight: 500;
+            color: #1a1a1a;
+        }
+
+        .dp-subtitle {
+            font-size: 13px;
+            color: #888780;
+            margin-top: 2px;
+        }
+
+        .dp-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+        }
+
+        .dp-field {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        label {
+            font-size: 13px;
+            color: #5f5e5a;
+            font-weight: 400;
+        }
+
+        input[type="number"] {
+            width: 100%;
+            padding: 8px 10px;
+            font-size: 14px;
+            border: 0.5px solid rgba(0,0,0,0.15);
+            border-radius: 8px;
+            background: #ffffff;
+            color: #1a1a1a;
+            outline: none;
+            transition: border-color 0.15s;
+        }
+
+        input[type="number"]:hover {
+            border-color: rgba(0,0,0,0.3);
+        }
+
+        input[type="number"]:focus {
+            border-color: #378add;
+            box-shadow: 0 0 0 3px rgba(55,138,221,0.12);
+        }
+
+        input[type="number"]::placeholder {
+            color: #b4b2a9;
+        }
+
+        .dp-hint {
+            font-size: 11px;
+            color: #b4b2a9;
+        }
+
+        .dp-btn {
+            margin-top: 1.5rem;
+            width: 100%;
+            padding: 10px 16px;
+            font-size: 15px;
+            font-weight: 500;
+            background: #e6f1fb;
+            color: #185fa5;
+            border: 1px solid #b5d4f4;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.15s, opacity 0.15s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .dp-btn:hover { background: #b5d4f4; }
+        .dp-btn:active { transform: scale(0.98); }
+
+        .dp-result {
+            margin-top: 1.25rem;
+            padding: 14px 18px;
+            border-radius: 8px;
+            border: 0.5px solid rgba(0,0,0,0.1);
+            background: #f5f5f0;
+            font-size: 15px;
+            color: #1a1a1a;
+            text-align: center;
+        }
+
+        .dp-result strong {
+            color: #185fa5;
+            font-weight: 500;
+        }
+
+        @media (max-width: 480px) {
+            .dp-grid { grid-template-columns: 1fr; }
+            .dp-card { padding: 1.25rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="dp-wrap">
+        <div class="dp-card">
+
+            <div class="dp-header">
+                <div class="dp-icon">
+                    <i class="ti ti-heart-rate-monitor" aria-hidden="true"></i>
+                </div>
+                <div>
+                    <p class="dp-title">Diabetes risk prediction</p>
+                    <p class="dp-subtitle">Enter patient details below</p>
+                </div>
+            </div>
+
+            <form action="{{ url_for('predict_data') }}" method="post">
+                <div class="dp-grid">
+
+                    <div class="dp-field">
+                        <label for="Pregnancies">Pregnancies</label>
+                        <input type="number" id="Pregnancies" name="Pregnancies"
+                               placeholder="0" min="0" max="20" required />
+                    </div>
+
+                    <div class="dp-field">
+                        <label for="Age">Age</label>
+                        <input type="number" id="Age" name="Age"
+                               placeholder="e.g. 35" min="18" max="90" required />
+                    </div>
+
+                    <div class="dp-field">
+                        <label for="Glucose">Glucose level</label>
+                        <input type="number" id="Glucose" name="Glucose"
+                               placeholder="mg/dL" min="0" max="300" required />
+                    </div>
+
+                    <div class="dp-field">
+                        <label for="BloodPressure">Blood pressure</label>
+                        <input type="number" id="BloodPressure" name="BloodPressure"
+                               placeholder="mm Hg" min="0" max="200" required />
+                    </div>
+
+                    <div class="dp-field">
+                        <label for="SkinThickness">Skin thickness</label>
+                        <input type="number" id="SkinThickness" name="SkinThickness"
+                               placeholder="mm" min="0" max="100" required />
+                        <span class="dp-hint">Triceps skinfold</span>
+                    </div>
+
+                    <div class="dp-field">
+                        <label for="Insulin">Insulin</label>
+                        <input type="number" id="Insulin" name="Insulin"
+                               placeholder="μU/mL" min="0" max="850" required />
+                        <span class="dp-hint">2-hour serum insulin</span>
+                    </div>
+
+                    <div class="dp-field">
+                        <label for="BMI">BMI</label>
+                        <input type="number" id="BMI" name="BMI"
+                               placeholder="kg/m²" step="0.1" min="0" max="70" required />
+                    </div>
+
+                    <div class="dp-field">
+                        <label for="DiabetesPedigreeFunction">Pedigree function</label>
+                        <input type="number" id="DiabetesPedigreeFunction" name="DiabetesPedigreeFunction"
+                               placeholder="0.078 – 2.42" step="0.001" min="0.078" max="2.42" required />
+                        <span class="dp-hint">Diabetes hereditary score</span>
+                    </div>
+
+                </div>
+
+                <button type="submit" class="dp-btn">
+                    <i class="ti ti-scan" aria-hidden="true"></i>
+                    Run prediction
+                </button>
+            </form>
+
+            {% if results %}
+            <div class="dp-result">
+                Prediction result: <strong>{{ results }}</strong>
+            </div>
+            {% endif %}
+
+        </div>
+    </div>
+
+</body>
+</html>
